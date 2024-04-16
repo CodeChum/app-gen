@@ -21,7 +21,12 @@ export default function Result({
           <DialogTitle>Result</DialogTitle>
         </DialogHeader>
         <div className="overflow-auto max-h-[600px]">
-          {text && <code dangerouslySetInnerHTML={{ __html: text }} />}
+          {text && (
+            <code
+              className="whitespace-pre"
+              dangerouslySetInnerHTML={{ __html: text }}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
