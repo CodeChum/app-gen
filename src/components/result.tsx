@@ -16,12 +16,12 @@ export default function Result({
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] md:max-w-[560px]">
+      <DialogContent className="sm:max-w-[480px] md:max-w-[640px]">
         <DialogHeader>
           <DialogTitle>Result</DialogTitle>
         </DialogHeader>
-        <div className="flex">
-          <code>{text}</code>
+        <div className="overflow-auto max-h-[600px]">
+          {text && <code dangerouslySetInnerHTML={{ __html: text }} />}
         </div>
       </DialogContent>
     </Dialog>
