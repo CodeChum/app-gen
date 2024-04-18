@@ -8,11 +8,13 @@ import { generate } from '@/app/actions';
 import { ChatCompletion } from 'openai/src/resources/index.js';
 import Result from './result';
 import { toast } from 'sonner';
+import ResultQuestions from './result-questions';
+import { Questions } from '@/types/questions';
 
 export default function Form() {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<ChatCompletion | null>(null);
+  const [result, setResult] = useState<ChatCompletion | Questions | null>(null);
 
   const onOpenChange = (open: boolean) => {
     if (!open) {
@@ -39,8 +41,47 @@ export default function Form() {
           onClick={async () => {
             setIsLoading(true);
             try {
-              const response = await generate(value);
-              setResult(response);
+              // const response = await generate(value);
+              // setResult(response);
+              setResult([
+                {
+                  question: 'Where was Jose Rizal born?',
+                  choices: ['Manila', 'Cebu', 'Laguna', 'Ilocos'],
+                  answer: 2,
+                },
+                {
+                  question:
+                    "What is the title of Jose Rizal's most famous novel?",
+                  choices: [
+                    'El Filibusterismo',
+                    'Noli Me Tangere',
+                    'Mi Ultimo Adios',
+                    'La Solidaridad',
+                  ],
+                  answer: 1,
+                },
+                {
+                  question: 'In what year was Jose Rizal executed?',
+                  choices: ['1896', '1898', '1901', '1872'],
+                  answer: 0,
+                },
+                {
+                  question: 'Where did Jose Rizal study ophthalmology?',
+                  choices: ['Madrid', 'Paris', 'Vienna', 'Berlin'],
+                  answer: 2,
+                },
+                {
+                  question:
+                    "What is the meaning of Rizal's full name, Jose Protacio Rizal Mercado y Alonzo Realonda?",
+                  choices: [
+                    'Brave patriot',
+                    'Humble physician',
+                    'Light of the Filipinos',
+                    'Pious writer',
+                  ],
+                  answer: 2,
+                },
+              ]);
             } catch {
               toast('Something went wrong :( Try again.', {
                 description:
@@ -65,11 +106,16 @@ export default function Form() {
           )}
         </Button>
       </div>
-      <Result
+      <ResultQuestions
+        isOpen={!!result}
+        items={result as Questions}
+        onOpenChange={onOpenChange}
+      />
+      {/* <Result
         isOpen={!!result}
         text={result ? result.choices[0].message.content : null}
         onOpenChange={onOpenChange}
-      />
+      /> */}
     </>
   );
 }
