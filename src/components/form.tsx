@@ -9,12 +9,11 @@ import { ChatCompletion } from 'openai/src/resources/index.js';
 import Result from './result';
 import { toast } from 'sonner';
 import ResultQuestions from './result-questions';
-import { Questions } from '@/types/questions';
 
 export default function Form() {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<ChatCompletion | Questions | null>(null);
+  const [result, setResult] = useState<ChatCompletion | null>(null);
 
   const onOpenChange = (open: boolean) => {
     if (!open) {
@@ -69,7 +68,7 @@ export default function Form() {
       </div>
       <ResultQuestions
         isOpen={!!result}
-        items={result as Questions}
+        items={result ? JSON.parse(result.choices[0].message.content!) : null}
         onOpenChange={onOpenChange}
       />
       {/* <Result

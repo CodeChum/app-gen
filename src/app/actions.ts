@@ -24,11 +24,6 @@ export async function generate(prompt: string) {
         messages: [
           {
             role: 'system',
-            content:
-              'Your response must be in HTML format, includes appropriate line breaks (include multiple line breaks in between questions), and uses <strong> tags to emphasize important text',
-          },
-          {
-            role: 'system',
             content: initialPrompt,
           },
           { role: 'user', content: prompt },
