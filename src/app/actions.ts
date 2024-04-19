@@ -8,6 +8,16 @@ const openai = new OpenAI({
 });
 
 export async function generate(prompt: string) {
+  const initialPrompt = `
+    Generate 5 multiple choice questions with correct answers based on the topic given. Your response should only be a JSON string in this format:
+    [
+      {
+        question: 'Where was Jose Rizal born?',
+        choices: ['Manila', 'Cebu', 'Laguna', 'Ilocos'],
+        answer: 2,
+      },
+    ]
+  `;
   const completion = await retry(
     () =>
       openai.chat.completions.create({
@@ -19,8 +29,7 @@ export async function generate(prompt: string) {
           },
           {
             role: 'system',
-            content:
-              'Generate 5 multiple choice questions with correct answers based on the topic given:',
+            content: initialPrompt,
           },
           { role: 'user', content: prompt },
         ],
