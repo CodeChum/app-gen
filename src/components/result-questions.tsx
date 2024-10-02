@@ -40,13 +40,20 @@ export default function ResultQuestions({
   onOpenChange: (open: boolean) => void;
 }) {
   const [results, setResults] = useState<boolean[]>([]);
+  const [answersSelected, setAnswersSelected] = useState<number[]>([]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-
+  
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (items) {
+      setAnswersSelected(
+        items.map(
+          (item, index) => parseInt(data.questions[index])
+        )
+      );
+
       setResults(
         items.map(
           (item, index) => item.answer === parseInt(data.questions[index])
@@ -90,10 +97,7 @@ export default function ResultQuestions({
                     return (
                       <FormItem className="flex flex-col gap-2 pb-6 border-b border-border">
                         <FormLabel className="flex items-center gap-2">
-                          <strong>
-                            {index + 1}. {item.question}
-                          </strong>
-                          {hasResults && (
+                        {hasResults && (
                             <div
                               className={cn({
                                 'text-green': isCorrect,
@@ -107,6 +111,9 @@ export default function ResultQuestions({
                               )}
                             </div>
                           )}
+                          <strong>
+                            {index + 1}. {item.question}
+                          </strong>
                         </FormLabel>
                         <FormControl>
                           <RadioGroup
@@ -121,7 +128,10 @@ export default function ResultQuestions({
                                 <FormControl>
                                   <RadioGroupItem value={`${i}`} />
                                 </FormControl>
-                                <FormLabel>{choice}</FormLabel>
+                                <FormLabel className={(hasResults && i === answersSelected[index]) ? cn({
+                                'text-green': isCorrect,
+                                'text-red': !isCorrect,
+                              }) : undefined}>{choice}</FormLabel>
                               </FormItem>
                             ))}
                           </RadioGroup>
