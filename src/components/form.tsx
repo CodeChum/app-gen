@@ -28,7 +28,7 @@ export default function Form() {
           className="h-[200px] text-lg"
           disabled={isLoading}
           name="prompt"
-          placeholder="Type your prompt here."
+          placeholder=""
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -56,26 +56,27 @@ export default function Form() {
           {isLoading ? (
             <>
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-              Generating
+              Running
             </>
           ) : (
             <>
               <MagicWandIcon className="mr-2" />
-              Generate
+              Run
             </>
           )}
         </Button>
       </div>
-      <ResultQuestions
-        isOpen={!!result}
-        items={result ? JSON.parse(result.choices[0].message.content!) : null}
-        onOpenChange={onOpenChange}
-      />
       {/* <Result
         isOpen={!!result}
         text={result ? result.choices[0].message.content : null}
         onOpenChange={onOpenChange}
       /> */}
+
+      <ResultQuestions
+        isOpen={!!result}
+        items={result ? JSON.parse(result.choices[0].message.content!) : null}
+        onOpenChange={onOpenChange}
+      />
     </>
   );
 }
